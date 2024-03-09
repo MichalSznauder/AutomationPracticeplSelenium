@@ -8,7 +8,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +19,7 @@ public class WomenSectionTest {
 
     private WebDriver driver;
     private WebElement element;
-
+    protected WebDriverWait wait;
 
 
 
@@ -104,15 +107,25 @@ public void pricesShouldBeInDollars() {
 
     driver.findElement(By.id("search_query_top")).click();
 
-    driver.findElement(By.id("search_query_top")).sendKeys(blouse);
+
+
+    //        var redAlertBox = driver.findElement(By.className("alert-danger"));
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8));
+//
+//        wait.until(ExpectedConditions.visibilityOf(redAlertBox));
+
 
     driver.findElement(By.name("submit_search")).click();
 
-var blouseProductName = driver.findElement(By.xpath("//h5[@itemprop='name'] /a[@class='product-name' and contains(text(), 'Blouse')] ")).getText();
+    WebElement blouseProductName = driver.findElement(By.xpath("//h5[@itemprop='name'] /a[@class='product-name' and contains(text(), 'Blouse')] "));
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+    wait.until(ExpectedConditions.visibilityOf(blouseProductName));
 
     System.out.println(blouseProductName);
 
-    Assertions.assertThat(blouseProductName.contains("Blouse")).isTrue();
+    var blouseProductNameToString = blouseProductName.getText();
+
+    Assertions.assertThat(blouseProductNameToString.contains("Blouse")).isTrue();
 
 
     var blouseProductPrice = driver.findElement(By.xpath("//div[@class='right-block']//div[@class='content_price']/span")).getText().substring(1);
