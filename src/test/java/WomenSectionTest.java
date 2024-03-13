@@ -135,7 +135,5 @@ public void pricesShouldBeInDollars() {
     System.out.println(blouseProductPriceInt);
     Assertions.assertThat(blouseProductPriceInt > 0).isTrue();
 
-
 }
-
 }
