@@ -1,55 +1,22 @@
+package tests;
+
 import com.github.javafaker.Faker;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Random;
 
-public class CreateAccountTest {
+public class CreateAccountTest extends BaseTest{
 
-
-    private WebDriver driver;
-    private WebElement element;
-
-    protected WebDriverWait wait;
-
-
-
-    @BeforeAll
-    public static void setUpClass() {
-        WebDriverManager.chromedriver().setup();
-
-    }
-
-    @BeforeEach
-    public void setupTest(){
-        driver = new ChromeDriver();
-
-    }
-
-    @AfterEach
-    public void teardown(){
-        if (driver != null){
-            driver.quit();
-        }
-    }
 
 @Test
 public void createAccountWithInvalidEmailNotPossible(){
 
-    driver.get("http://www.automationpractice.pl/index.php");
-
-    Assertions.assertThat(driver.getTitle()).isEqualTo("My Shop");
 
     driver.findElement(By.className("login")).click();
 
@@ -94,9 +61,6 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
-    driver.get("http://www.automationpractice.pl/index.php");
-
-    Assertions.assertThat(driver.getTitle()).isEqualTo("My Shop");
 
     driver.findElement(By.className("login")).click();
 
@@ -137,9 +101,6 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-    driver.get("http://www.automationpractice.pl/index.php");
-
-    Assertions.assertThat(driver.getTitle()).isEqualTo("My Shop");
 
     driver.findElement(By.className("login")).click();
 
