@@ -2,11 +2,13 @@ package tests;
 
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.WomenProductsPriceList;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,7 +16,17 @@ import java.util.stream.Collectors;
 
 public class WomenSectionTest extends BaseTest{
 
+private WomenProductsPriceList womenProductsPriceList;
 
+
+@BeforeEach
+@Override
+public void setupTest() {
+
+    super.setupTest();
+    womenProductsPriceList = new WomenProductsPriceList(driver);
+
+}
 
 @Test
  void pricesOnWomenSectionShouldNotBeEmpty() {
@@ -22,10 +34,12 @@ public class WomenSectionTest extends BaseTest{
 
     driver.findElement(By.xpath("//li/a[@title='Women']")).click();
 
+List <String> productsPriceList = womenProductsPriceList.getPriceList();
 
-    List<String> productsPriceList = driver.findElements(By.xpath("//span[@class = 'price product-price' and not(parent::*[@itemprop='offers'])]")).stream()
-            .map(el -> el.getAttribute("textContent").trim().substring(1))
-            .collect(Collectors.toList());
+
+    // List<String> productsPriceList = driver.findElements(By.xpath("//span[@class = 'price product-price' and not(parent::*[@itemprop='offers'])]")).stream()
+ //           .map(el -> el.getAttribute("textContent").trim().substring(1))
+   //         .collect(Collectors.toList());
 
     System.out.println(productsPriceList);
 
