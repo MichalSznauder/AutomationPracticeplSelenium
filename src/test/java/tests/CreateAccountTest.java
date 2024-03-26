@@ -2,11 +2,16 @@ package tests;
 
 import com.github.javafaker.Faker;
 import org.assertj.core.api.Assertions;
+import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.CreateAccountPage;
+import pages.PageHeader;
 
 import java.time.Duration;
 import java.util.Random;
@@ -14,27 +19,41 @@ import java.util.Random;
 public class CreateAccountTest extends BaseTest{
 
 
+    private  PageHeader pageHeader;
+private CreateAccountPage createAccountPage;
+
+    @BeforeEach
+@Override
+public void setupTest() {
+
+    super.setupTest();
+    pageHeader = new PageHeader(driver);
+    createAccountPage = new CreateAccountPage(driver);
+}
+
+
+
 @Test
 public void createAccountWithInvalidEmailNotPossible(){
 
 
-    driver.findElement(By.className("login")).click();
 
-    WebElement createAccountForm = driver.findElement(By.id("create-account_form"));
+    PageHeader.clickOnSignInButton();
+
+
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(createAccountForm));
+     wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
 
-    WebElement emailInputField = driver.findElement(By.xpath("//form[@id='create-account_form'] // input[@class='is_required validate account_input form-control']"));
 
-    emailInputField.sendKeys("");
 
-    driver.findElement(By.id("SubmitCreate")).click();
+    PageHeader.fillEmailInputField("");
 
-    WebElement redAlertBox = driver.findElement(By.id("create_account_error"));
+    CreateAccountPage.clickOnCreateAnAccountButton();
+
     WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(redAlertBox));
+    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getRedAlertBox()));
 
-    Assertions.assertThat(redAlertBox.isDisplayed()).isTrue();
+    Assertions.assertThat(CreateAccountPage.getRedAlertBox().isDisplayed()).isTrue();
 
 
     Random random = new Random();
@@ -44,31 +63,30 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     System.out.println(emailWithoutAtSymbol);
 
-    emailInputField.sendKeys(emailWithoutAtSymbol);
 
-    driver.findElement(By.id("SubmitCreate")).click();
+    PageHeader.fillEmailInputField(emailWithoutAtSymbol);
+
+    CreateAccountPage.clickOnCreateAnAccountButton();
 
     WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait2.until(ExpectedConditions.visibilityOf(redAlertBox));
+    wait2.until(ExpectedConditions.visibilityOf(CreateAccountPage.getRedAlertBox()));
 
 
-    Assertions.assertThat(redAlertBox.isDisplayed()).isTrue();
+    Assertions.assertThat(CreateAccountPage.getRedAlertBox().isDisplayed()).isTrue();
 
 }
 
 @Test
     public void createAccountWithoutMandatoryFieldsShouldNotBePossible(){
 
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
 
-    driver.findElement(By.className("login")).click();
+    PageHeader.clickOnSignInButton();
 
-    WebElement createAccountForm = driver.findElement(By.id("create-account_form"));
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(createAccountForm));
+    wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
 
-    WebElement emailInputField = driver.findElement(By.xpath("//form[@id='create-account_form'] // input[@class='is_required validate account_input form-control']"));
 
     Random random = new Random();
     int randomNumber = random.nextInt(1000);
@@ -77,38 +95,37 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     System.out.println(correctEmail);
 
-    emailInputField.sendKeys(correctEmail);
 
-    driver.findElement(By.id("SubmitCreate")).click();
-
+    PageHeader.fillEmailInputField(correctEmail);
 
 
-    WebElement personalInformation = driver.findElement(By.id("account-creation_form"));
+    CreateAccountPage.clickOnCreateAnAccountButton();
+
     WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(personalInformation));
+    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getPersonalInformationForm()));
 
-    driver.findElement(By.id("submitAccount")).click();
 
-    WebElement redAlertBox = driver.findElement(By.className("alert-danger"));
+    CreateAccountPage.clickOnRegisterAnAccountButton();
+
     WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait2.until(ExpectedConditions.visibilityOf(redAlertBox));
+    wait2.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountAlertBox()));
 
-    Assertions.assertThat(redAlertBox.isDisplayed()).isTrue();
+    Assertions.assertThat(CreateAccountPage.getCreateAccountAlertBox().isDisplayed()).isTrue();
 }
 
 @Test
         public void createAccountWithProperAndFullDataShouldBePossible(){
 
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
 
-    driver.findElement(By.className("login")).click();
 
-    WebElement createAccountForm = driver.findElement(By.id("create-account_form"));
+    PageHeader.clickOnSignInButton();
+
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(createAccountForm));
+    wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
 
-    WebElement emailInputField = driver.findElement(By.xpath("//form[@id='create-account_form'] // input[@class='is_required validate account_input form-control']"));
+
 
     Random random = new Random();
     int randomNumber = random.nextInt(1000);
@@ -117,14 +134,13 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     System.out.println(correctEmail);
 
-    emailInputField.sendKeys(correctEmail);
-
-    driver.findElement(By.id("SubmitCreate")).click();
+    PageHeader.fillEmailInputField(correctEmail);
 
 
-    WebElement personalInformation = driver.findElement(By.id("account-creation_form"));
+    CreateAccountPage.clickOnCreateAnAccountButton();
+
     WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(personalInformation));
+    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getPersonalInformationForm()));
 
     driver.findElement(By.id("id_gender1")).click();
 
@@ -147,9 +163,7 @@ public void createAccountWithInvalidEmailNotPossible(){
    WebElement yearBox = driver.findElement(By.id("years"));
     yearBox.sendKeys("1985");
 
-    driver.findElement(By.id("submitAccount")).click();
-
-
+    CreateAccountPage.clickOnRegisterAnAccountButton();
 
    WebElement greenSuccessBox = driver.findElement(By.className("alert-success"));
 

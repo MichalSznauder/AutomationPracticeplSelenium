@@ -16,8 +16,8 @@ public class BaseTest {
     protected WebElement element;
     protected WebDriverWait wait;
 
-    private static final String BASE_URL = "http://www.automationpractice.pl/index.php";
-    private static final String HOME_PAGE_TITLE = "My Shop";
+    protected static final String BASE_URL = "http://www.automationpractice.pl/index.php";
+    protected static final String HOME_PAGE_TITLE = "My Shop";
 
 
 

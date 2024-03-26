@@ -37,10 +37,6 @@ public void setupTest() {
 List <String> productsPriceList = womenProductsPriceList.getPriceList();
 
 
-    // List<String> productsPriceList = driver.findElements(By.xpath("//span[@class = 'price product-price' and not(parent::*[@itemprop='offers'])]")).stream()
- //           .map(el -> el.getAttribute("textContent").trim().substring(1))
-   //         .collect(Collectors.toList());
-
     System.out.println(productsPriceList);
 
     var productsWithEmptyPrice = productsPriceList.stream()
@@ -65,9 +61,9 @@ public void pricesShouldBeInDollars() {
     driver.findElement(By.xpath("//li/a[@title='Women']")).click();
 
 
-    List<String> productsPriceList = driver.findElements(By.xpath("//span[@class = 'price product-price' and not(parent::*[@itemprop='offers'])]")).stream()
-            .map(el -> el.getAttribute("textContent").trim())
-            .collect(Collectors.toList());
+
+    List <String> productsPriceList = womenProductsPriceList.getPriceList();
+
 
     System.out.println(productsPriceList);
 
