@@ -20,10 +20,8 @@ public class WomenProductsPriceList {
 
     public List<String> getPriceList() {
        return priceList.stream()
-                .map(el -> el.getAttribute("textContent").trim().substring(1))
+               .map(el -> el.getAttribute("textContent").trim())
         .collect(Collectors.toList());
 
-
     }
-
 }

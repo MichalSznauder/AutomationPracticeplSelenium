@@ -1,26 +1,23 @@
 package tests;
 
 import com.github.javafaker.Faker;
-import org.assertj.core.api.Assertions;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.CreateAccountPage;
 import pages.PageHeader;
-
 import java.time.Duration;
 import java.util.Random;
+import static org.assertj.core.api.Assertions.*;
 
 public class CreateAccountTest extends BaseTest{
 
 
     private  PageHeader pageHeader;
-private CreateAccountPage createAccountPage;
+    private CreateAccountPage createAccountPage;
 
     @BeforeEach
 @Override
@@ -50,10 +47,8 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     CreateAccountPage.clickOnCreateAnAccountButton();
 
-    WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getRedAlertBox()));
 
-    Assertions.assertThat(CreateAccountPage.getRedAlertBox().isDisplayed()).isTrue();
+   assertThat(CreateAccountPage.isRedAlertBoxDisplayed()).isTrue();
 
 
     Random random = new Random();
@@ -68,11 +63,8 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     CreateAccountPage.clickOnCreateAnAccountButton();
 
-    WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait2.until(ExpectedConditions.visibilityOf(CreateAccountPage.getRedAlertBox()));
 
-
-    Assertions.assertThat(CreateAccountPage.getRedAlertBox().isDisplayed()).isTrue();
+    assertThat(CreateAccountPage.isRedAlertBoxDisplayed()).isTrue();
 
 }
 
@@ -107,10 +99,8 @@ public void createAccountWithInvalidEmailNotPossible(){
 
     CreateAccountPage.clickOnRegisterAnAccountButton();
 
-    WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait2.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountAlertBox()));
 
-    Assertions.assertThat(CreateAccountPage.getCreateAccountAlertBox().isDisplayed()).isTrue();
+    assertThat(CreateAccountPage.isCreateAccountAlertBoxDisplayed()).isTrue();
 }
 
 @Test
@@ -167,7 +157,7 @@ public void createAccountWithInvalidEmailNotPossible(){
 
    WebElement greenSuccessBox = driver.findElement(By.className("alert-success"));
 
-    Assertions.assertThat(greenSuccessBox.isDisplayed()).isTrue();
+    assertThat(greenSuccessBox.isDisplayed()).isTrue();
 
     driver.findElement(By.className("logout")).click();
 

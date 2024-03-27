@@ -1,7 +1,6 @@
 package tests;
 
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -13,6 +12,8 @@ import pages.WomenProductsPriceList;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class WomenSectionTest extends BaseTest{
 
@@ -43,13 +44,13 @@ List <String> productsPriceList = womenProductsPriceList.getPriceList();
             .filter(el -> el.isEmpty())
             .collect(Collectors.toList());
 
-    Assertions.assertThat(productsWithEmptyPrice).isEmpty();
+    assertThat(productsWithEmptyPrice).isEmpty();
 
     var productsWithZeroPrice = productsPriceList.stream()
             .anyMatch(el -> el.equals("0"));
 
 
-    Assertions.assertThat(productsWithZeroPrice).isFalse();
+    assertThat(productsWithZeroPrice).isFalse();
 
 }
 
@@ -71,7 +72,7 @@ public void pricesShouldBeInDollars() {
     var productsWithDollar = productsPriceList.stream()
                 .allMatch(el -> el.contains("$"));
 
-        Assertions.assertThat(productsWithDollar).isTrue();
+        assertThat(productsWithDollar).isTrue();
 
     }
 
@@ -95,7 +96,7 @@ public void pricesShouldBeInDollars() {
 
     var blouseProductNameToString = blouseProductName.getText();
 
-    Assertions.assertThat(blouseProductNameToString.contains("Blouse")).isTrue();
+    assertThat(blouseProductNameToString.contains("Blouse")).isTrue();
 
 
     var blouseProductPrice = driver.findElement(By.xpath("//div[@class='right-block']//div[@class='content_price']/span")).getText().substring(1);
@@ -103,7 +104,7 @@ public void pricesShouldBeInDollars() {
     var blouseProductPriceInt = Integer.parseInt(blouseProductPrice);
 
     System.out.println("blouse price is " +blouseProductPriceInt);
-    Assertions.assertThat(blouseProductPriceInt > 0).isTrue();
+    assertThat(blouseProductPriceInt > 0).isTrue();
 
 }
 }
