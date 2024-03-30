@@ -15,96 +15,100 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class WomenSectionTest extends BaseTest{
+public class WomenSectionTest extends BaseTest {
 
-private WomenProductsPriceList womenProductsPriceList;
-
-
-@BeforeEach
-@Override
-public void setupTest() {
-
-    super.setupTest();
-    womenProductsPriceList = new WomenProductsPriceList(driver);
-
-}
-
-@Test
- void pricesOnWomenSectionShouldNotBeEmpty() {
+    private WomenProductsPriceList womenProductsPriceList;
 
 
-    driver.findElement(By.xpath("//li/a[@title='Women']")).click();
+    @BeforeEach
+    @Override
+    public void setupTest() {
 
-List <String> productsPriceList = womenProductsPriceList.getPriceList();
+        super.setupTest();
+        womenProductsPriceList = new WomenProductsPriceList(driver);
 
+    }
 
-    System.out.println(productsPriceList);
-
-    var productsWithEmptyPrice = productsPriceList.stream()
-            .filter(el -> el.isEmpty())
-            .collect(Collectors.toList());
-
-    assertThat(productsWithEmptyPrice).isEmpty();
-
-    var productsWithZeroPrice = productsPriceList.stream()
-            .anyMatch(el -> el.equals("0"));
+    @Test
+    void pricesOnWomenSectionShouldNotBeEmpty() {
 
 
-    assertThat(productsWithZeroPrice).isFalse();
+        driver.findElement(By.xpath("//li/a[@title='Women']")).click();
 
-}
-
-@Test
-public void pricesShouldBeInDollars() {
+        List<String> productsPriceList = womenProductsPriceList.getPriceList();
 
 
+        System.out.println(productsPriceList);
 
-    driver.findElement(By.xpath("//li/a[@title='Women']")).click();
+        var productsWithEmptyPrice = productsPriceList.stream()
+                .filter(el -> el.isEmpty())
+                .collect(Collectors.toList());
+
+        assertThat(productsWithEmptyPrice).isEmpty();
+
+        var productsWithZeroPrice = productsPriceList.stream()
+                .map(el -> el.substring(1))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        System.out.println(productsWithZeroPrice);
+
+        var productsWithZeroPriceInt = productsWithZeroPrice.stream()
+                .allMatch(el -> el > 0);
+
+        assertThat(productsWithZeroPriceInt).isTrue();
+
+    }
+
+    @Test
+    public void pricesShouldBeInDollars() {
 
 
-
-    List <String> productsPriceList = womenProductsPriceList.getPriceList();
-
-
-    System.out.println(productsPriceList);
+        driver.findElement(By.xpath("//li/a[@title='Women']")).click();
 
 
-    var productsWithDollar = productsPriceList.stream()
+        List<String> productsPriceList = womenProductsPriceList.getPriceList();
+
+
+        System.out.println(productsPriceList);
+
+
+        var productsWithDollar = productsPriceList.stream()
                 .allMatch(el -> el.contains("$"));
 
         assertThat(productsWithDollar).isTrue();
 
     }
 
-@Test
-    public void blouseShouldHaveProperNameAndPrice(){
+    @Test
+    public void blouseShouldHaveProperNameAndPrice() {
 
-     String blouse = "Blouse";
-
-
-    driver.findElement(By.id("search_query_top")).click();
-
-    driver.findElement(By.id("search_query_top")).sendKeys(blouse);
+        String blouse = "Blouse";
 
 
-    driver.findElement(By.name("submit_search")).click();
+        driver.findElement(By.id("search_query_top")).click();
 
-    WebElement blouseProductName = driver.findElement(By.xpath("//h5[@itemprop='name'] /a[@class='product-name' and contains(text(), 'Blouse')] "));
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(blouseProductName));
+        driver.findElement(By.id("search_query_top")).sendKeys(blouse);
 
 
-    var blouseProductNameToString = blouseProductName.getText();
+        driver.findElement(By.name("submit_search")).click();
 
-    assertThat(blouseProductNameToString.contains("Blouse")).isTrue();
+        WebElement blouseProductName = driver.findElement(By.xpath("//h5[@itemprop='name'] /a[@class='product-name' and contains(text(), 'Blouse')] "));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(blouseProductName));
 
 
-    var blouseProductPrice = driver.findElement(By.xpath("//div[@class='right-block']//div[@class='content_price']/span")).getText().substring(1);
+        var blouseProductNameToString = blouseProductName.getText();
 
-    var blouseProductPriceInt = Integer.parseInt(blouseProductPrice);
+        assertThat(blouseProductNameToString.contains("Blouse")).isTrue();
 
-    System.out.println("blouse price is " +blouseProductPriceInt);
-    assertThat(blouseProductPriceInt > 0).isTrue();
 
-}
+        var blouseProductPrice = driver.findElement(By.xpath("//div[@class='right-block']//div[@class='content_price']/span")).getText().substring(1);
+
+        var blouseProductPriceInt = Integer.parseInt(blouseProductPrice);
+
+        System.out.println("blouse price is " + blouseProductPriceInt);
+        assertThat(blouseProductPriceInt > 0).isTrue();
+
+    }
 }

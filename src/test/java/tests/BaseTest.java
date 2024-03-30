@@ -6,19 +6,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseTest {
 
     protected WebDriver driver;
-    protected WebElement element;
-    protected WebDriverWait wait;
+
 
     protected static final String BASE_URL = "http://www.automationpractice.pl/index.php";
     protected static final String HOME_PAGE_TITLE = "My Shop";
-
 
 
     @BeforeAll
@@ -28,7 +24,7 @@ public class BaseTest {
     }
 
     @BeforeEach
-    public void setupTest(){
+    public void setupTest() {
         driver = new ChromeDriver();
 
         driver.get(BASE_URL);
@@ -37,8 +33,8 @@ public class BaseTest {
     }
 
     @AfterEach
-    public void teardown(){
-        if (driver != null){
+    public void teardown() {
+        if (driver != null) {
             driver.quit();
         }
     }

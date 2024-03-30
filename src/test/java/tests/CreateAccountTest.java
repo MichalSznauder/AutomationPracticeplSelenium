@@ -1,165 +1,146 @@
 package tests;
 
 import com.github.javafaker.Faker;
+import model.PersonalInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.CreateAccountPage;
 import pages.PageHeader;
+
 import java.time.Duration;
 import java.util.Random;
+
 import static org.assertj.core.api.Assertions.*;
 
-public class CreateAccountTest extends BaseTest{
+public class CreateAccountTest extends BaseTest {
 
 
-    private  PageHeader pageHeader;
+    private PageHeader pageHeader;
     private CreateAccountPage createAccountPage;
-
-    @BeforeEach
-@Override
-public void setupTest() {
-
-    super.setupTest();
-    pageHeader = new PageHeader(driver);
-    createAccountPage = new CreateAccountPage(driver);
-}
-
-
-
-@Test
-public void createAccountWithInvalidEmailNotPossible(){
-
-
-
-    PageHeader.clickOnSignInButton();
-
-
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-     wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
-
-
-
-    PageHeader.fillEmailInputField("");
-
-    CreateAccountPage.clickOnCreateAnAccountButton();
-
-
-   assertThat(CreateAccountPage.isRedAlertBoxDisplayed()).isTrue();
-
-
-    Random random = new Random();
-    int randomNumber = random.nextInt(1000);
-
-    var emailWithoutAtSymbol = randomNumber +"test"+  "." + randomNumber;
-
-    System.out.println(emailWithoutAtSymbol);
-
-
-    PageHeader.fillEmailInputField(emailWithoutAtSymbol);
-
-    CreateAccountPage.clickOnCreateAnAccountButton();
-
-
-    assertThat(CreateAccountPage.isRedAlertBoxDisplayed()).isTrue();
-
-}
-
-@Test
-    public void createAccountWithoutMandatoryFieldsShouldNotBePossible(){
-
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-
-    PageHeader.clickOnSignInButton();
-
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
-
-
-    Random random = new Random();
-    int randomNumber = random.nextInt(1000);
-
-    var correctEmail = randomNumber +"@test"+  ".com";
-
-    System.out.println(correctEmail);
-
-
-    PageHeader.fillEmailInputField(correctEmail);
-
-
-    CreateAccountPage.clickOnCreateAnAccountButton();
-
-    WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getPersonalInformationForm()));
-
-
-    CreateAccountPage.clickOnRegisterAnAccountButton();
-
-
-    assertThat(CreateAccountPage.isCreateAccountAlertBoxDisplayed()).isTrue();
-}
-
-@Test
-        public void createAccountWithProperAndFullDataShouldBePossible(){
-
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-
-
-    PageHeader.clickOnSignInButton();
-
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait.until(ExpectedConditions.visibilityOf(CreateAccountPage.getCreateAccountForm()));
-
-
-
-    Random random = new Random();
-    int randomNumber = random.nextInt(1000);
-
-    var correctEmail = randomNumber +"@test"+  ".com";
-
-    System.out.println(correctEmail);
-
-    PageHeader.fillEmailInputField(correctEmail);
-
-
-    CreateAccountPage.clickOnCreateAnAccountButton();
-
-    WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-    wait1.until(ExpectedConditions.visibilityOf(CreateAccountPage.getPersonalInformationForm()));
-
-    driver.findElement(By.id("id_gender1")).click();
-
+    private PersonalInformation personalInformation;
     Faker faker = new Faker();
 
-    String firstName = faker.name().firstName();
-    String lastName = faker.name().lastName();
+    @BeforeEach
+    @Override
+    public void setupTest() {
 
-    String password = faker.internet().password(5,6);
+        super.setupTest();
+        pageHeader = new PageHeader(driver);
+        createAccountPage = new CreateAccountPage(driver);
+        personalInformation = new PersonalInformation();
+    }
 
-    driver.findElement(By.id("id_gender1"));
+
+    @Test
+    public void createAccountWithInvalidEmailNotPossible() {
 
 
-    driver.findElement(By.id("customer_firstname")).sendKeys(firstName);
-    driver.findElement(By.id("customer_lastname")).sendKeys(lastName);
-    driver.findElement(By.id("passwd")).sendKeys(password);
-    driver.findElement(By.id("days")).sendKeys("5");
-    driver.findElement(By.id("months")).sendKeys("May");
+        pageHeader.clickOnSignInButton();
 
-   WebElement yearBox = driver.findElement(By.id("years"));
-    yearBox.sendKeys("1985");
 
-    CreateAccountPage.clickOnRegisterAnAccountButton();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(createAccountPage.getCreateAccountForm()));
 
-   WebElement greenSuccessBox = driver.findElement(By.className("alert-success"));
 
-    assertThat(greenSuccessBox.isDisplayed()).isTrue();
+        pageHeader.fillEmailInputField("");
 
-    driver.findElement(By.className("logout")).click();
+        createAccountPage.clickOnCreateAnAccountButton();
+
+        assertThat(createAccountPage.isRedAlertBoxDisplayed()).isTrue();
+
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(1000);
+
+        var emailWithoutAtSymbol = randomNumber + "test" + "." + randomNumber;
+
+        System.out.println(emailWithoutAtSymbol);
+
+        pageHeader.fillEmailInputField(emailWithoutAtSymbol);
+
+        createAccountPage.clickOnCreateAnAccountButton();
+
+
+        assertThat(createAccountPage.isRedAlertBoxDisplayed()).isTrue();
+
+    }
+
+    @Test
+    public void createAccountWithoutMandatoryFieldsShouldNotBePossible() {
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+
+        pageHeader.clickOnSignInButton();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(createAccountPage.getCreateAccountForm()));
+
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(1000);
+
+        var correctEmail = randomNumber + "@test" + ".com";
+
+        System.out.println(correctEmail);
+
+        pageHeader.fillEmailInputField(correctEmail);
+
+        createAccountPage.clickOnCreateAnAccountButton();
+
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait1.until(ExpectedConditions.visibilityOf(createAccountPage.getPersonalInformationForm()));
+
+        createAccountPage.clickOnRegisterAnAccountButton();
+
+
+        assertThat(createAccountPage.isCreateAccountAlertBoxDisplayed()).isTrue();
+    }
+
+    @Test
+    public void createAccountWithProperAndFullDataShouldBePossible() {
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+
+        pageHeader.clickOnSignInButton();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(createAccountPage.getCreateAccountForm()));
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(1000);
+
+        var correctEmail = randomNumber + "@test" + ".com";
+
+        System.out.println(correctEmail);
+
+        pageHeader.fillEmailInputField(correctEmail);
+
+        createAccountPage.clickOnCreateAnAccountButton();
+
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait1.until(ExpectedConditions.visibilityOf(createAccountPage.getPersonalInformationForm()));
+
+        driver.findElement(By.id("id_gender1")).click();
+
+
+        PersonalInformation personalInformation = new PersonalInformation();
+        personalInformation.setFirstName(faker.name().firstName());
+        personalInformation.setLastName(faker.name().lastName());
+        personalInformation.setPassword(faker.internet().password(5, 6));
+        personalInformation.setDay("5");
+        personalInformation.setMonth("May");
+        personalInformation.setYear("1985");
+
+        createAccountPage.sendCreateAccountForm(personalInformation);
+
+        assertThat(createAccountPage.isGreenSuccessBoxDisplayed()).isTrue();
+
+        driver.findElement(By.className("logout")).click();
 
 
     }

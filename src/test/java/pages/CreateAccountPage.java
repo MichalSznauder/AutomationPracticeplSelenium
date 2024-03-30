@@ -1,98 +1,119 @@
 package pages;
 
+import model.PersonalInformation;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.NoSuchElementException;
 
-public class CreateAccountPage {
 
-   private static WebDriverWait wait;
+public class CreateAccountPage extends BasePage {
+
 
     public CreateAccountPage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
+        super(driver);
     }
 
     @FindBy(id = "SubmitCreate")
-    static
     WebElement createAnAccountButton;
 
     @FindBy(id = "submitAccount")
-    static
     WebElement registerAnAccountButton;
 
-
     @FindBy(id = "create-account_form")
-    static
     WebElement createAccountForm;
 
     @FindBy(id = "create_account_error")
-    static
-    WebElement redAlertBox ;
+    WebElement redAlertBox;
 
     @FindBy(className = "alert-danger")
-    static
-    WebElement createAccountAlertBox ;
-
+    WebElement createAccountAlertBox;
 
     @FindBy(id = "account-creation_form")
-    static
-    WebElement personalInformationForm ;
+    WebElement personalInformationForm;
+
+    @FindBy(className = "alert-success")
+    WebElement greenSuccessBox;
+
+    @FindBy(id = "customer_firstname")
+    WebElement customerFirstName;
+
+    @FindBy(id = "customer_lastname")
+    WebElement customerLastName;
+
+    @FindBy(id = "passwd")
+    WebElement passwd;
+
+    @FindBy(id = "days")
+    WebElement days;
+
+    @FindBy(id = "months")
+    WebElement months;
+
+    @FindBy(id = "years")
+    WebElement years;
 
 
-
-    public static void clickOnCreateAnAccountButton(){
+    public void clickOnCreateAnAccountButton() {
         createAnAccountButton.click();
-
     }
 
-    public static void clickOnRegisterAnAccountButton(){
+    public void clickOnRegisterAnAccountButton() {
         registerAnAccountButton.click();
     }
 
-    public static WebElement getCreateAccountForm() {
+    public WebElement getCreateAccountForm() {
         return createAccountForm;
     }
 
-    public static WebElement getRedAlertBox() {
-        return redAlertBox;
-    }
-    public static WebElement getCreateAccountAlertBox() {
-        return createAccountAlertBox;
-    }
-
-    public static WebElement getPersonalInformationForm() {
+    public WebElement getPersonalInformationForm() {
         return personalInformationForm;
     }
 
-public static boolean isRedAlertBoxDisplayed() {
+    public boolean isRedAlertBoxDisplayed() {
         wait.until(ExpectedConditions.visibilityOf(redAlertBox));
-boolean isDisplayed = false;
-try {
-    isDisplayed = redAlertBox.isDisplayed();
-} catch (NoSuchElementException e) {}
-return isDisplayed;
+        boolean isDisplayed = false;
+        try {
+            isDisplayed = redAlertBox.isDisplayed();
+        } catch (NoSuchElementException e) {
+        }
+        return isDisplayed;
+    }
 
-}
-
-    public static boolean isCreateAccountAlertBoxDisplayed() {
+    public boolean isCreateAccountAlertBoxDisplayed() {
         wait.until(ExpectedConditions.visibilityOf(createAccountAlertBox));
         boolean isDisplayed = false;
         try {
             isDisplayed = createAccountAlertBox.isDisplayed();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException e) {
+        }
         return isDisplayed;
+    }
 
+    public boolean isGreenSuccessBoxDisplayed() {
+        wait.until(ExpectedConditions.visibilityOf(greenSuccessBox));
+        boolean isDisplayed = false;
+        try {
+            isDisplayed = greenSuccessBox.isDisplayed();
+        } catch (NoSuchElementException e) {
+        }
+        return isDisplayed;
     }
 
 
+    public void sendCreateAccountForm(PersonalInformation personalInformation) {
 
+        customerFirstName.sendKeys(personalInformation.getFirstName());
+        customerLastName.sendKeys(personalInformation.getLastName());
+        passwd.sendKeys(personalInformation.getPassword());
+        days.sendKeys(personalInformation.getDay());
+        months.sendKeys(personalInformation.getMonth());
+        years.sendKeys(personalInformation.getYear());
+
+        clickOnRegisterAnAccountButton();
+
+    }
 
 }
